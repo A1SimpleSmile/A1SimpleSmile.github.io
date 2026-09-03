@@ -1,40 +1,48 @@
-import './App.css'
+import { useEffect } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { MotionProvider, useMotionPreference } from './useMotionPreference'
+import Navbar from './Navbar'
+import Hero from './Hero'
+import About from './About'
+import Works from './Works'
+import Contact from './Contact'
+import Footer from './Footer'
 
-function App() {
+gsap.registerPlugin(ScrollTrigger)
+
+function AppInner() {
+  const { enabled } = useMotionPreference()
+
+  useEffect(() => {
+    // Fallback: kill all ScrollTriggers and kill animations when motion is off
+    if (!enabled) {
+      ScrollTrigger.getAll().forEach((st) => st.kill())
+      gsap.globalTimeline.clear()
+    } else {
+      // Refresh ScrollTrigger when toggled back on so pins re-measure
+      ScrollTrigger.refresh()
+    }
+  }, [enabled])
+
   return (
-    <div className="site">
-      <header className="header">
-        <h1>賴俋勳</h1>
-        <p>你好</p>
-      </header>
-
-      <main className="main">
-        <section className="works">
-          <h2>作品</h2>
-          <ul className="work-list">
-            <li className="work-card">
-              <span className="work-title">000</span>
-            </li>
-            <li className="work-card">
-              <span className="work-title">001</span>
-            </li>
-          </ul>
-        </section>
+    <>
+      <Navbar />
+      <main>
+        <Hero />
+        <About />
+        <Works />
+        <Contact />
       </main>
-
-      <footer className="footer">
-        <h2>聯絡方式</h2>
-        <ul className="contact-list">
-          <li>
-            <a href="mailto:spider960523@gmail.com">spider960523@gmail.com</a>
-          </li>
-          <li>
-            <a href="tel:+886975079147">0975-079-147</a>
-          </li>
-        </ul>
-      </footer>
-    </div>
+      <Footer />
+    </>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <MotionProvider>
+      <AppInner />
+    </MotionProvider>
+  )
+}
