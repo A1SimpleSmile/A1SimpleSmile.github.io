@@ -1,0 +1,95 @@
+/* ============================================================
+   Print stylesheet — clean black-on-white resume output.
+   Hide all interactive / dynamic layers, expand Works details.
+   ============================================================ */
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  :root {
+    --ink: #000000 !important;
+    --text-muted: #1a1a1a !important;
+    --warm: #000000 !important;
+    --ice: #000000 !important;
+    --violet: #000000 !important;
+    --line: #d0d0d0 !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* Hide interactive / dynamic layers */
+  .navbar,
+  .navbar__toggle,
+  .mcursor,
+  .preloader,
+  .hero__cta,
+  .contact-aurora__orb,
+  .contact-aurora__lead,
+  .glass-bubble__spot,
+  .copy__ripple,
+  .social,
+  .works-gallery__end,
+  .pcard__label,
+  .pcard__glow {
+    display: none !important;
+  }
+
+  /* Break out of scroll-driven pinned/sticky sections */
+  .overlay, .pmodal { position: static !important; }
+
+  .hero, .hero__pin, .works-gallery, .works-gallery__viewport {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .works-gallery__track {
+    transform: none !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10mm !important;
+    padding: 0 !important;
+    will-change: auto !important;
+  }
+
+  /* Expand each work card to show full detail */
+  .pcard {
+    flex: none !important;
+    width: 100% !important;
+    break-inside: avoid;
+    background: #ffffff !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  /* Make sure card content (title/body/tags) prints fully */
+  .pcard__num { display: none !important; }
+  .pcard__download {
+    border: 1px solid #888 !important;
+    color: #000 !important;
+  }
+
+  .scroll-text__token { opacity: 1 !important; color: #000 !important; }
+
+  .glass-bubble {
+    background: #ffffff !important;
+    color: #111 !important;
+    border: 1px solid #ccc !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+  .intent__pill, .copy__row, .copy__btn { background: #fff !important; color: #111 !important; }
+
+  .footer { border-top: 1px solid #ccc !important; color: #333 !important; }
+}

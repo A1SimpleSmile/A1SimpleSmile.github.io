@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { MotionProvider, useMotionPreference } from './useMotionPreference'
+import { useAutoDegrade } from './useAutoDegrade.jsx'
+import Preloader from './components/Preloader'
+import MagneticCursor from './components/MagneticCursor'
 import Navbar from './Navbar'
 import Hero from './Hero'
 import About from './About'
@@ -13,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 function AppInner() {
   const { enabled } = useMotionPreference()
+  const degraded = useAutoDegrade()
 
   useEffect(() => {
     // Fallback: kill all ScrollTriggers and kill animations when motion is off
@@ -27,9 +31,11 @@ function AppInner() {
 
   return (
     <>
+      <Preloader />
+      <MagneticCursor />
       <Navbar />
       <main>
-        <Hero />
+        <Hero degraded={degraded} />
         <About />
         <Works />
         <Contact />

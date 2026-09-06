@@ -5,7 +5,7 @@ import { useMotionPreference } from './useMotionPreference'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function Hero() {
+export default function Hero({ degraded = false }) {
   const { enabled } = useMotionPreference()
   const sectionRef = useRef(null)
   const pinRef = useRef(null)
@@ -75,7 +75,6 @@ export default function Hero() {
       }
       raf = requestAnimationFrame(autoDrift)
     }
-
     // Pin hero and scrub canvas sequence as user scrolls
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
@@ -104,7 +103,11 @@ export default function Hero() {
       .fromTo(ctaRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0 }, 0.6)
 
     resize()
-    raf = requestAnimationFrame(autoDrift)
+    // Degraded devices: render a single static frame, skip the auto-drift loop
+    // to save battery/CPU. Scroll-scrub still redraws a frame on demand.
+    if (!degraded) {
+      raf = requestAnimationFrame(autoDrift)
+    }
     window.addEventListener('resize', resize)
 
     return () => {
@@ -113,7 +116,7 @@ export default function Hero() {
       st.kill()
       tl.kill()
     }
-  }, [enabled])
+  }, [enabled, degraded])
 
   return (
     <section ref={sectionRef} id="home" className="hero">
